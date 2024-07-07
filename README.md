@@ -1,4 +1,19 @@
-# Getting Started with Create React App
+# How to start
+
+auth-server should be ready on Docker
+
+> > npm install
+> > npm start
+
+# Test data
+
+username:jdoe
+password:jdoe
+And
+username:alice
+password:alice
+
+# Fixing CORS
 
 Select Your Realm:
 On the left-hand side, select the realm you are working with, e.g., quickstart.
