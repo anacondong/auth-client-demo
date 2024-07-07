@@ -1,16 +1,21 @@
 # How to start
 
 auth-server should be ready on Docker
+ 
+npm install
 
-> > npm install
-> > npm start
+npm start
 
 # Test data
 
 username:jdoe
+
 password:jdoe
+
 And
+
 username:alice
+
 password:alice
 
 # Fixing CORS
