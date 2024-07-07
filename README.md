@@ -1,2 +1,16 @@
-# auth-client-demo
-auth-client-demo
+# Getting Started with Create React App
+
+Select Your Realm:
+On the left-hand side, select the realm you are working with, e.g., quickstart.
+
+Navigate to Clients:
+
+Click on Clients in the left-hand menu.
+Select the client you are configuring, e.g., authz-servlet.
+Configure CORS Settings for the Client:
+
+Settings Tab:
+Valid Redirect URIs:
+Add http://localhost:3000/* (assuming your React app runs on port 3000).
+Web Origins:
+Add http://localhost:3000 (or the appropriate URL if different)
