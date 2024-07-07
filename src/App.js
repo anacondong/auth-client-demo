@@ -1,37 +1,64 @@
 import React, { useState, useEffect } from "react";
-import keycloak from "./keycloak";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import Login from "./Login";
+import Home from "./Home";
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
+  const [username, setUsername] = useState("");
+  const [roles, setRoles] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("react-token");
     if (token) {
-      keycloak.init({ token }).then((authenticated) => {
-        setAuthenticated(authenticated);
-      });
+      const decodedToken = jwtDecode(token);
+      setUsername(decodedToken.preferred_username);
+      setRoles(decodedToken.realm_access.roles);
+      setAuthenticated(true);
     }
   }, []);
 
   const handleLogin = () => {
+    const token = localStorage.getItem("react-token");
+    const decodedToken = jwtDecode(token);
+    setUsername(decodedToken.preferred_username);
+    setRoles(decodedToken.realm_access.roles);
     setAuthenticated(true);
   };
 
   const logout = () => {
-    keycloak.logout();
+    localStorage.removeItem("react-token");
+    setAuthenticated(false);
   };
 
-  if (!authenticated) {
-    return <Login onLogin={handleLogin} />;
-  }
-
   return (
-    <div>
-      <h1>Welcome to the Home Page</h1>
-      <p>This page is protected and requires authentication.</p>
-      <button onClick={logout}>Logout</button>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/login">
+          {authenticated ? (
+            <Redirect to="/home" />
+          ) : (
+            <Login onLogin={handleLogin} />
+          )}
+        </Route>
+        <Route path="/home">
+          {authenticated ? (
+            <Home username={username} roles={roles} logout={logout} />
+          ) : (
+            <Redirect to="/login" />
+          )}
+        </Route>
+        <Route path="/">
+          <Redirect to="/login" />
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 

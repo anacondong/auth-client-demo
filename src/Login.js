@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+import "./App.css";
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState(undefined);
+  const history = useHistory();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -28,15 +32,19 @@ const Login = ({ onLogin }) => {
       localStorage.setItem("react-token", access_token);
       localStorage.setItem("react-refresh-token", refresh_token);
       onLogin();
+      setErrorMsg("OK !!");
+      history.push("/home");
     } catch (error) {
+      setErrorMsg("Login failed");
       console.error("Login failed", error);
     }
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="center-div">
+      <h1>Login Page</h1>
       <form onSubmit={handleLogin}>
+        {errorMsg && <div style={{ color: "red" }}>{errorMsg}</div>}
         <div>
           <label>Username:</label>
           <input
